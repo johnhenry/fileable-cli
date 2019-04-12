@@ -29,7 +29,7 @@ Fileable's renderer's can be used from the command line
 ### CLI Installation
 
 ```sh
-npm install --global fileable
+npm install --global fileable-cli
 ```
 
 ### CLI Usage
