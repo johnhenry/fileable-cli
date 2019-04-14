@@ -1,58 +1,47 @@
+
+
 ![fileable logo](./static/docs/logo.png)
 
-# Fileable
+# Fileable-CLI
 
 Render a file tree using a JSX template.
 
-Inspired by [React FS Renderer](https://github.com/ericvicenti/react-fs-renderer)
+For the embeddable-library, see [fileable](https://github.com/johnhenry/fileable).
 
-## API -- Template
-
-Fileable can render [functional components](https://reactjs.org/docs/components-and-props.html) built with the following components:
-
-### Component: React.Fragment
-
-React.Fragment can be used to group files and folders
-
-```javascript
-import {Fragment} from 'react';
-const template = ()=><>
-    <File name='empty_file'/>
-    <Folder name='empty_folder'/>
-</>;
-```
-
-## API -- CLI
-
-Fileable's renderer's can be used from the command line
-
-### CLI Installation
+## Installation
 
 ```sh
 npm install --global fileable-cli
 ```
 
-### CLI Usage
+## Usage
 
-#### fileable
+## Bacis Usage
+
+```sh
+fileable build ./path/to/sample-template.jsx ./destination
+```
+
+### Templates Files
+
+See [fileable](https://github.com/johnhenry/fileable) for a basick explanation of template files.
+
+### Commands
 
 ##### --help
 
-Try `fileable --help` for more options
-
-```javascript
-import React, {Fragment} from 'react';
-export default ()=><>...</>
-```
+Try `fileable --help` to  see options
 
 #### fileable build
+
+Build a file tree from template into destination directory.
 
 ```sh
 fileable build <template> <destination>
 ```
 
 ```sh
-fileable build ./template.jsx ./dist
+fileable build ./path/to/sample-template.jsx ./destination
 ```
 
 Local files or remote files (beginning with 'http://', 'https://', or 'ftp://') can be used as template and input files.
@@ -63,27 +52,53 @@ fileable build https://raw.githubusercontent.com/johnhenry/fileable/master/test/
 
 It is not necessary to install fileable-components or react when using templates. However, the references to their components must be included.
 
-```javascript
-import React, { Fragment } from "react"; //React, and any used React components must be required
-import { File, Clear, Folder } from 'fileable-components';// Any used fileable-components must be required
-```
-
 ##### --test/--no-test flag
 
+As a safety precaution, you must pass the '--no-test' flag to write to the file system. Otherwise, output will be written to the console.
+
 ```sh
-fileable build ./template.jsx ./dist --no-test
+fileable build ./path/to/sample-template.jsx ./destination ./dist --no-test
 ```
 
 ##### --input flag
 
+The input flag can be used to provide inputs. File must export an [asynchronous] iterator.
+
 ```sh
-fileable build ./template.jsx ./dist --no-test
+fileable build ./path/to/sample-template.jsx ./destination ./dist --input async-iterator.js
 ```
 
 #### fileable dependencies
 
+List installed dependencies.
+Any packages referenced within template, including components, must first be installed.
+
+```sh
+fileable dependencies
+```
+
 #### fileable install
+Install NPM package.
+
+```sh
+fileable install <npm package>
+```
 
 #### fileable uninstall
 
+Uninstall NPM package.
+BE CAREFUL! UNINSTALLING PACKAGES MAY CAUSE FILEABLE-CLI TO STOP WORKING PROPERLY!!!
+
+```sh
+fileable uninstall <npm package>
+```
+
 #### fileable template
+
+Create template from file or folder.
+
+Note: Note yet implemented.
+
+```sh
+fileable template <folder> > template.jsx
+```
