@@ -29,12 +29,12 @@ tape('cli test: build file 00', async ({ ok, end, equal }) => {
     ok(Math.abs(new Date(readFileSync(join(destination, 'datefile')).toString()) - Date.now()) < 10000, 'file should be generated dynamically from command');
     ok(readFileSync(join(destination, 'foodfile')).toString().indexOf('Broccoli') === -1, 'file should be content should be piped through command');
     equal(0o655, statSync(join(destination, 'permission')).mode & (8 ** 3 - 1), 'file should be created with mode 655');
-    ok(readFileSync(join(destination, 'index.html')).toString().indexOf('<html>') === 0, '');
-    ok(readFileSync(join(destination, 'index-doctype.html')).toString().indexOf('<!doctype html>') === 0, 'local file should be downloaded relative to template');
+    ok(readFileSync(join(destination, 'index.html')).toString().indexOf('<html>') === 0, 'html should be rendered');
+    ok(readFileSync(join(destination, 'index-doctype.html')).toString().indexOf('<!doctype html>') === 0, 'doctype preamble should be rendered');
     equal('HelloHello', readFileSync(join(destination, 'double')).toString(), '');
     equal('HelloHelloGoodbye', readFileSync(join(destination, 'doubleps')).toString(), '');
     equal('WorldWorld', readFileSync(join(destination, 'doubleclone')).toString(), '');
-
+    ok(existsSync(join(destination, 'composed')), 'components should be composable');
     end();
     // finish tests
     await rmdir(destination);
