@@ -47,8 +47,13 @@ fileable build ./path/to/sample-template.jsx ./destination
 Local files or remote files (beginning with 'http://', 'https://', or 'ftp://') can be used as template and input files.
 
 ```sh
-fileable build https://raw.githubusercontent.com/johnhenry/fileable/master/test/example/template.jsx here
+fileable build https://raw.githubusercontent.com/johnhenry/fileable/master/test/template/file.00.jsx ./destination
 ```
+
+[fileable-component-file](https://github.com/johnhenry/fileable-component-file), [fileable-component-folder](https://github.com/johnhenry/fileable-component-folder) , and [fileable-component-clear](https://github.com/johnhenry/fileable-component-clear) components are included with fileable-cli by default. Other components may be installed separately.
+
+See 'fileable install' below.
+
 
 It is not necessary to install fileable-components or react when using templates. However, the references to their components must be included.
 
@@ -97,7 +102,7 @@ fileable uninstall <npm package>
 
 Create template from file or folder.
 
-Note: Note yet implemented.
+Note: Not yet implemented.
 
 ```sh
 fileable template <folder> > template.jsx
