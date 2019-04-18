@@ -1,110 +1,55 @@
-const tape = require('tape');
-//
 const { execSync } = require('child_process');
-const { existsSync, readFileSync, statSync} = require('fs');
-const { join } = require('path');
-const { promisify } = require('util');
-const rimraf = require('rimraf');
-const rmdir = promisify(rimraf);
+const renderFS = (file, { template_context, folder_context}) => execSync(`npm run fileable -- build ${template_context}/${file} ${folder_context} --no-test`);
+
+const tester = require('../node_modules/fileable/test/tester.js');
+
+const templateFile00 = 'file.00.jsx';
+const templateFolder00 = 'folder.00.jsx';
+const templateClear00 = 'clear.00.jsx';
+const templateClear01 = 'clear.01.jsx';
+const templateClear02 = 'clear.02.jsx';
+
+const templateFileValidation00 = require('../node_modules/fileable/test/validation/file.00.js');
+const templateFolderValidation00 = require('../node_modules/fileable/test/validation/folder.00.js');
+const templateClearValidation00 = require('../node_modules/fileable/test/validation/clear.00.js');
+const templateClearValidation01 = require('../node_modules/fileable/test/validation/clear.01.js');
+const templateClearValidation02 = require('../node_modules/fileable/test/validation/clear.02.js');
+
 const folder_context = './dist/temp';
-const template_context = 'node_modules/fileable/test/template';
+const renderOptions = {
+    folder_context,
+    template_context: './node_modules/fileable/test/template'
+};
+const testafileOptions = {
+    message: 'it should generate a given file tree'
+};
 
-const parseMode = (mode) => mode & 0o777;
-const EMPTY_HASH = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+tester('cli test: build file 00'
+    , folder_context
+    , async () => await renderFS(templateFile00, renderOptions)
+    , templateFileValidation00
+    , testafileOptions);
 
-tape('cli test: build file 00', async ({ ok, end, equal }) => {
+tester('cli test: build folder 00'
+    , folder_context
+    , async () => await renderFS(templateFolder00, renderOptions)
+    , templateFolderValidation00
+    , testafileOptions);
 
-    // clear directory
-    await rmdir(folder_context);
-    // run program
-    execSync(`npm run fileable -- build ${template_context}/file.00.jsx ${folder_context} --no-test`);
-    // begin tests
-    ok(existsSync(join(folder_context, EMPTY_HASH)), 'empty file should be created with computed hash');
-    ok(existsSync(join(folder_context, 'empty')), 'empty file should be created with given name');
-    ok(existsSync(join(folder_context, `${EMPTY_HASH}.md`)), 'empty file should be created with computed hash and given extension');
-    ok(existsSync(join(folder_context, 'empty.md')), 'empty file should be created given name and given extension');
-    equal('Hello', readFileSync(join(folder_context, 'hello')).toString(), 'file should be created with children as content');
-    equal('World', readFileSync(join(folder_context, 'world')).toString(), 'file should be created with attrubute "content" as content');
-    ok(readFileSync(join(folder_context, 'google.html')).toString().indexOf('<!doctype html>') === 0, 'file should be downloaded');
-    ok(readFileSync(join(folder_context, 'package.json')).toString().indexOf('{') === 0, 'local file should be downloaded relative to template');
-    ok(Math.abs(new Date(readFileSync(join(folder_context, 'datefile')).toString()) - Date.now()) < 10000, 'file should be generated dynamically from command');
-    ok(readFileSync(join(folder_context, 'foodfile')).toString().indexOf('Broccoli') === -1, 'file should be content should be piped through command');
-    equal(0o655, statSync(join(folder_context, 'permission')).mode & (8 ** 3 - 1), 'file should be created with mode 655');
-    ok(readFileSync(join(folder_context, 'index.html')).toString().indexOf('<html>') === 0, 'html should be rendered');
-    ok(readFileSync(join(folder_context, 'index-doctype.html')).toString().indexOf('<!doctype html>') === 0, 'doctype preamble should be rendered');
-    equal('HelloHello', readFileSync(join(folder_context, 'double')).toString(), '');
-    equal('HelloHelloGoodbye', readFileSync(join(folder_context, 'doubleps')).toString(), '');
-    equal('WorldWorld', readFileSync(join(folder_context, 'doubleclone')).toString(), '');
-    ok(existsSync(join(folder_context, 'composed')), 'components should be composable');
-    equal('01', readFileSync(join(folder_context, 'append')).toString(), 'content should be appended');
-    equal('1\n', readFileSync(join(folder_context, 'end')).toString(), 'new line should be appended to end of file');
+tester('cli test: build clear 00'
+    , folder_context
+    , async () => await renderFS(templateClear00, renderOptions)
+    , templateClearValidation00
+    , testafileOptions);
 
-    end();
-    // finish tests
-    await rmdir(folder_context);
-});
+tester('cli test: build clear 01'
+    , folder_context
+    , async () => await renderFS(templateClear01, renderOptions)
+    , templateClearValidation01
+    , testafileOptions);
 
-tape('cli test: build folder 00', async ({ ok, end, equal }) => {
-
-    // clear directory
-    await rmdir(folder_context);
-
-    // run program
-    execSync(`npm run fileable -- build ${template_context}/folder.00.jsx ${folder_context} --no-test`);
-    // begin tests
-    ok(existsSync(join(folder_context, 'top')), 'folder should be created');
-    ok(existsSync(join(folder_context, 'top', 'next')), 'sub-folder should be created within folder');
-    ok(existsSync(join(folder_context, 'top', EMPTY_HASH)), 'file should be created within folder');
-    ok(existsSync(join(folder_context, 'zipped.zip')), 'zipped folder should be created');
-    // TODO .zip doesn't seem to work?
-    end();
-    // finish tests
-    await rmdir(folder_context);
-});
-
-tape('cli test: build clear 00', async ({ ok, end, equal, notOk }) => {
-
-    // clear directory
-    await rmdir(folder_context);
-    // run program
-    execSync(`npm run fileable -- build ${template_context}/clear.00.jsx ${folder_context} --no-test`);
-    // begin tests
-    notOk(existsSync(join(folder_context, 'i_should_not_be')), 'previous file shuould be deleted');
-    ok(existsSync(join(folder_context, 'i_should_be')), 'new file shoud be created');
-    end();
-    // finish tests
-    await rmdir(folder_context);
-});
-
-tape('cli test: build clear 01', async ({ ok, end, notOk }) => {
-
-    // clear directory
-    await rmdir(folder_context);
-    // run program
-    execSync(`npm run fileable -- build ${template_context}/clear.01.jsx ${folder_context} --no-test`);
-    // begin tests
-    notOk(existsSync(join(folder_context, 'a.html')), 'specified file shuould be deleted');
-    ok(existsSync(join(folder_context, 'b.js')), 'unspecified file shuould remain');
-    notOk(existsSync(join(folder_context, '0', 'c.html')), 'specified file should be deleted');
-    ok(existsSync(join(folder_context, '0', 'd.js')), 'unspecified files should remain');
-    end();
-    // finish tests
-    await rmdir(folder_context);
-});
-
-tape('cli test: build clear 02', async ({ ok, end, notOk }) => {
-    // clear directory
-    await rmdir(folder_context);
-    // run program
-    execSync(`npm run fileable -- build ${template_context}/clear.02.jsx ${folder_context} --no-test`);
-    // begin tests
-
-    ok(existsSync(join(folder_context, 'a.html')), 'unspecified file shuould remain');
-    notOk(existsSync(join(folder_context, 'b.js')), 'specified file shuould be deleted');
-    ok(existsSync(join(folder_context, '0', 'c.html')), 'unspecified files should remain');
-    notOk(existsSync(join(folder_context, '0', 'd.js')), 'specified file should be deleted');
-
-    end();
-    // finish tests
-    await rmdir(folder_context);
-});
+tester('cli test: build clear 02'
+    , folder_context
+    , async () => await renderFS(templateClear02, renderOptions)
+    , templateClearValidation02
+    , testafileOptions);
