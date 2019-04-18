@@ -8,6 +8,13 @@ Render a file tree using a JSX template.
 
 For the embeddable-library, see [fileable](https://github.com/johnhenry/fileable).
 
+
+## Basic Usage without insallation
+
+```sh
+npx fileable-cli build ./path/to/template.jsx ./destination
+```
+
 ## Installation
 
 ```sh
@@ -16,10 +23,11 @@ npm install --global fileable-cli
 
 ## Usage
 
-## Bacis Usage
+
+## Basic Usage
 
 ```sh
-fileable build ./path/to/sample-template.jsx ./destination
+fileable build ./path/to/template.jsx ./destination
 ```
 
 ### Templates Files
@@ -41,7 +49,7 @@ fileable build <template> <destination>
 ```
 
 ```sh
-fileable build ./path/to/sample-template.jsx ./destination
+fileable build ./path/to/template.jsx ./destination
 ```
 
 Local files or remote files (beginning with 'http://', 'https://', or 'ftp://') can be used as template and input files.
@@ -62,7 +70,7 @@ It is not necessary to install fileable-components or react when using templates
 As a safety precaution, you must pass the '--no-test' flag to write to the file system. Otherwise, output will be written to the console.
 
 ```sh
-fileable build ./path/to/sample-template.jsx ./destination ./dist --no-test
+fileable build ./path/to/template.jsx ./destination ./dist --no-test
 ```
 
 ##### --input flag
@@ -70,7 +78,7 @@ fileable build ./path/to/sample-template.jsx ./destination ./dist --no-test
 The input flag can be used to provide inputs. File must export an [asynchronous] iterator.
 
 ```sh
-fileable build ./path/to/sample-template.jsx ./destination ./dist --input async-iterator.js
+fileable build ./path/to/template.jsx ./destination ./dist --input async-iterator.js
 ```
 
 #### fileable dependencies
