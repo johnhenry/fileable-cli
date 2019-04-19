@@ -75,16 +75,33 @@ fileable build ./path/to/template.jsx ./destination ./dist --no-test
 
 ##### --input flag
 
-The input flag can be used to provide inputs. File must export an [asynchronous] iterator.
+The input flag is used to specify a file as inputs.
+
+The input file must export an array or some other -- possibly asynchronous -- iterator.
 
 ```sh
-fileable build ./path/to/template.jsx ./destination ./dist --input async-iterator.js
+fileable build ./path/to/template.jsx ./destination ./dist --input iterator.js
+```
+
+iterator.js
+```javascript
+export default ['first argumet', 'second-argument'];
+```
+
+async-iterator.js
+```javascript
+import { prompt } from 'node-popup';
+export default (async function *{
+    yield await prompt('first argumet?', 'first argumet');
+    yield await prompt('second argumet?', 'second argumet');
+})();
 ```
 
 #### fileable dependencies
 
 List installed dependencies.
 Any packages referenced within template, including components, must first be installed.
+Packages references within files passed via --input flag must be referenced as well.
 
 ```sh
 fileable dependencies
