@@ -45,7 +45,7 @@
     "@babel/preset-typescript": "7.3.3",
     "fileable": "0.0.17",
     "fileable-component-clear": "0.0.5",
-    "fileable-component-file": "0.0.8",
+    "fileable-component-file": "0.0.9",
     "fileable-component-folder": "0.0.6",
     "find-up": "3.0.0",
     "glob": "7.1.3",
