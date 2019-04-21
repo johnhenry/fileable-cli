@@ -121,6 +121,11 @@ var builder = {
     type: 'string',
     default: '',
     desc: 'imported input file (must export [asynchronous] iterator)'
+  },
+  args: {
+    type: 'string',
+    default: '',
+    desc: 'comma separated list of arguments'
   }
 };
 var handler =
@@ -129,13 +134,13 @@ function () {
   var _ref2 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(_ref) {
-    var _ref$template, t, d, _ref$input, i, test, tempname, remoteTemplate, remoteInput, template, destination, input, template_context, response, text, _response, _text, file, array, match, ps;
+    var _ref$template, t, d, _ref$input, i, test, _ref$args, args, tempname, remoteTemplate, remoteInput, template, destination, input, template_context, response, text, _response, _text, file, array, match, ps;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _ref$template = _ref.template, t = _ref$template === void 0 ? '' : _ref$template, d = _ref.destination, _ref$input = _ref.input, i = _ref$input === void 0 ? '' : _ref$input, test = _ref.test;
+            _ref$template = _ref.template, t = _ref$template === void 0 ? '' : _ref$template, d = _ref.destination, _ref$input = _ref.input, i = _ref$input === void 0 ? '' : _ref$input, test = _ref.test, _ref$args = _ref.args, args = _ref$args === void 0 ? '' : _ref$args;
             tempname = tempFileName(__dirname, '.js');
             _context.prev = 2;
             template = (t || '').match(remoteFileMatch) ? t : localizer(t);
@@ -198,7 +203,7 @@ function () {
             }
 
           case 31:
-            file = "import template from '".concat(remoteTemplate, "';\nimport {render").concat(test ? 'Console' : 'FS', " as render} from \"fileable\";\n").concat(remoteInput ? "import args from \"".concat(remoteInput, "\";") : '', "\nconst main = async()=>{\n").concat(remoteInput ? "const input = [];\nfor await(const arg of args){\n    input.push(arg);\n}\n" : '', "\n\nrender(await template(").concat(remoteInput ? '... input' : '', "), {folder_context:'").concat(destination, "', template_context:'").concat(template_context, "'});\n\n}\nmain();\n// ");
+            file = "import template from '".concat(remoteTemplate, "';\nimport {render").concat(test ? 'Console' : 'FS', " as render} from \"fileable\";\n").concat(remoteInput ? "import args from \"".concat(remoteInput, "\";") : '', "\nconst main = async()=>{\n").concat(remoteInput ? "const input = [];\nfor await(const arg of args){\n    input.push(arg);\n}\n" : '', "\n\nrender(await template(").concat(remoteInput ? '... input' : args ? args : '', "), {folder_context:'").concat(destination, "', template_context:'").concat(template_context, "'});\n\n}\nmain();\n// ");
             fs.writeFileSync(tempname, file);
             array = [];
 

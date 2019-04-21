@@ -28,6 +28,11 @@ export const builder = {
         type: 'string',
         default: '',
         desc: 'imported input file (must export [asynchronous] iterator)'
+    },
+    args: {
+        type: 'string',
+        default: '',
+        desc: 'comma separated list of arguments'
     }
 };
 
@@ -35,7 +40,8 @@ export const handler = async ({
     template: t = '',
     destination: d,
     input: i = '',
-    test
+    test,
+    args =''
 }) => {
     const tempname = tempFileName(__dirname, '.js');
     let remoteTemplate;
@@ -78,7 +84,7 @@ for await(const arg of args){
 }
 `: ''}
 
-render(await template(${remoteInput ? '... input' : ''}), {folder_context:'${destination}', template_context:'${template_context}'});
+render(await template(${remoteInput ? '... input' : args ? args : ''}), {folder_context:'${destination}', template_context:'${template_context}'});
 
 }
 main();

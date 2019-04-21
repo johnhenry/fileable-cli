@@ -97,6 +97,16 @@ export default (async function *{
 })();
 ```
 
+##### --args flag
+
+The args flag is used to specify inputs via a comma-separated list of arguments.
+
+To pass a string, use escaped backticks \\\`...\\\`
+
+```sh
+fileable build ./path/to/template.jsx ./destination ./dist --args \`$SOME_STRING\`,$SOME_NUMBER,{json:\`file\`}
+```
+
 #### fileable dependencies
 
 List installed dependencies.
