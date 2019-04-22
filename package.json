@@ -43,7 +43,7 @@
     "@babel/preset-env": "7.4.2",
     "@babel/preset-react": "7.0.0",
     "@babel/preset-typescript": "7.3.3",
-    "fileable": "0.0.21",
+    "fileable": "0.0.22",
     "fileable-component-clear": "0.0.5",
     "fileable-component-file": "0.0.10",
     "fileable-component-folder": "0.0.6",
