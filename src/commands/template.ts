@@ -15,21 +15,3 @@ export const builder = {
 export const handler = async ({ path, interactive }) => {
     console.log('NOT IMPLEMENTED!!!');
 };
-// npm run fileable template  --interactive . output.jsx
-// Adding folder 'top'...
-// Folder 'top' added.
-// Adding file 'top/index.html'
-// File 'top/index.html' added.
-// Adding file 'img.png'...
-// File 'img.png' appears to be a binary file. How would you like to handle this?
-// >-encode file as base64
-// - add as src
-// - use raw data
-// - skip
-// Encoding 'img.png' as base 64
-// File 'img.png' added
-// Adding 'index.js'...
-// File 'index.js' added
-// Tree traversed.
-// Writing 'output.jsx'
-// Done.
